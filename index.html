@@ -1,56 +1,89 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>3D Rhomboid Dodecahedron</title>
-    <style>
-      body {
-        margin: 0;
-        background-color: #ffffff;
-      }
-      canvas {
-        width: 100%;
-        height: 100%;
-      }
-    </style>
-  </head>
-  <body>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
-    <script>
-      // Set up the scene, camera, and renderer
-      var scene = new THREE.Scene();
-      var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-      var renderer = new THREE.WebGLRenderer();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      document.body.appendChild(renderer.domElement);
+<head>
+  <title>Rhomboid Dodecahedron Generator</title>
+  <style>
+    /* add your CSS styles here */
+  </style>
+</head>
+<body>
+  <form id="form">
+  <label for="size">Size:</label>
+  <input type="number" id="size" value="1">
+  <br>
+  <label for="color">Color:</label>
+  <input type="color" id="color" value="#ff0000">
+  <br>
+  <button type="button" id="generate">Generate</button>
+</form>
 
-      // Set up the rhomboid dodecahedron geometry
-      var rhomboidDodecahedronGeometry = new THREE.IcosahedronGeometry(1, 0);
-      for (var i = 0; i < rhomboidDodecahedronGeometry.vertices.length; i++) {
-        rhomboidDodecahedronGeometry.vertices[i].z = rhomboidDodecahedronGeometry.vertices[i].y;
-        rhomboidDodecahedronGeometry.vertices[i].y = rhomboidDodecahedronGeometry.vertices[i].x;
-      }
-      rhomboidDodecahedronGeometry.verticesNeedUpdate = true;
-      rhomboidDodecahedronGeometry.computeVertexNormals();
+<canvas id="canvas" width="400" height="400"></canvas>
 
-      // Set up the rhomboid dodecahedron material and mesh
-      var rhomboidDodecahedronMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-      var rhomboidDodecahedron = new THREE.Mesh(rhomboidDodecahedronGeometry, rhomboidDodecahedronMaterial);
-      scene.add(rhomboidDodecahedron);
+<script src="https://cdn.jsdelivr.net/npm/three@0.121.1/build/three.min.js"></script>
 
-      // Position the camera
-      camera.position.z = 5;
+  <script>
+    const canvas = document.getElementById("canvas");
+const renderer = new THREE.WebGLRenderer({ canvas });
+renderer.setSize(canvas.width, canvas.height);
 
-      // Render loop
-      var render = function () {
-        requestAnimationFrame(render);
+function createRhomboidDodecahedron(size, color) {
+  // create a new geometry for the rhomboid dodecahedron
+  const geometry = new THREE.Geometry();
 
-        rhomboidDodecahedron.rotation.x += 0.01;
-        rhomboidDodecahedron.rotation.y += 0.01;
+  // define the vertices of the rhomboid dodecahedron
+  const vertices = [
+    (sqrt(2), 0, 1), (sqrt(2), 0, -1), (-sqrt(2), 0, -1), (-sqrt(2), 0, 1),
+    (1, sqrt(2), 0), (1, -sqrt(2), 0), (-1, -sqrt(2), 0), (-1, sqrt(2), 0),
+    (0, 1, sqrt(2)), (0, 1, -sqrt(2)), (0, -1, -sqrt(2)), (0, -1, sqrt(2))
+  ];
 
-        renderer.render(scene, camera);
-      };
+  // define the faces of the rhomboid dodecahedron
+  const faces = [
+    (0, 1, 4, 7), (1, 2, 5, 4), (2, 3, 6, 5), (3, 0, 7, 6),
+    (4, 5, 8, 11), (5, 6, 9, 8), (6, 7, 10, 9), (7, 4, 11, 10),
+    (8, 9, 0, 3), (9, 10, 1, 0), (10, 11, 2, 1), (11, 8, 3, 2)
+  ];
 
-      render();
-    </script>
-  </body>
+  // add the vertices and faces to the geometry
+  for (const vertex of vertices) {
+    geometry.vertices.push(new THREE.Vector3(...vertex));
+  }
+  for (const face of faces) {
+    geometry.faces.push(new THREE.Face3(...face));
+  }
+
+  // calculate the normals for the faces
+  geometry.computeFaceNormals();
+
+  // create a new material for the rhomboid dodecahedron
+  const material = new THREE.MeshBasicMaterial({ color });
+
+  // create a mesh from the geometry and material
+  const mesh = new THREE.Mesh(geometry, material);
+
+  // scale the mesh to the specified size
+  mesh.scale.set(size, size, size);
+
+  return mesh;
+}
+
+const generateButton = document.getElementById("generate");
+generateButton.addEventListener("click", () => {
+  // get the size and color from the form elements
+  const size = document.getElementById("size").value;
+  const color = document.getElementById("color").value;
+
+  // create a new rhomboid dodecahedron
+  const mesh = createRhomboidDodecahedron(size, color);
+
+  // create a new scene and add the mesh to it
+  const scene = new THREE.Scene();
+  scene.add(mesh);
+
+  // render the scene
+  renderer.render(scene, new THREE.PerspectiveCamera(75, canvas.width / canvas.height, 0.1, 1000));
+});
+
+  </script>
+</body>
 </html>
