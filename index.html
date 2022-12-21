@@ -22,6 +22,9 @@
 <script src="https://cdn.jsdelivr.net/npm/three@0.121.1/build/three.min.js"></script>
 
   <script>
+
+const { sqrt } = Math;
+
     const canvas = document.getElementById("canvas");
 const renderer = new THREE.WebGLRenderer({ canvas });
 renderer.setSize(canvas.width, canvas.height);
@@ -32,17 +35,17 @@ function createRhomboidDodecahedron(size, color) {
 
   // define the vertices of the rhomboid dodecahedron
   const vertices = [
-    (sqrt(2), 0, 1), (sqrt(2), 0, -1), (-sqrt(2), 0, -1), (-sqrt(2), 0, 1),
-    (1, sqrt(2), 0), (1, -sqrt(2), 0), (-1, -sqrt(2), 0), (-1, sqrt(2), 0),
-    (0, 1, sqrt(2)), (0, 1, -sqrt(2)), (0, -1, -sqrt(2)), (0, -1, sqrt(2))
-  ];
+  sqrt(2), 0, 1, sqrt(2), 0, -1, -sqrt(2), 0, -1, -sqrt(2), 0, 1,
+  1, sqrt(2), 0, 1, -sqrt(2), 0, -1, -sqrt(2), 0, -1, sqrt(2), 0,
+  0, 1, sqrt(2), 0, 1, -sqrt(2), 0, -1, -sqrt(2), 0, -1, sqrt(2)
+];
 
   // define the faces of the rhomboid dodecahedron
   const faces = [
-    (0, 1, 4, 7), (1, 2, 5, 4), (2, 3, 6, 5), (3, 0, 7, 6),
-    (4, 5, 8, 11), (5, 6, 9, 8), (6, 7, 10, 9), (7, 4, 11, 10),
-    (8, 9, 0, 3), (9, 10, 1, 0), (10, 11, 2, 1), (11, 8, 3, 2)
-  ];
+  0, 1, 4, 1, 2, 5, 2, 3, 6, 3, 0, 7,
+  4, 5, 8, 5, 6, 9, 6, 7, 10, 7, 4, 11,
+  8, 9, 0, 9, 10, 1, 10, 11, 2, 11, 8, 3
+];
 
   // add the vertices and faces to the geometry
   for (const vertex of vertices) {
