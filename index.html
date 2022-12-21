@@ -1,111 +1,63 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Rhomboid Dodecahedron Generator</title>
+  <title>Green Spinning 3D Rhomboid Dodecahedron</title>
   <style>
-    /* add your CSS styles here */
+    /* Add styling for the 3D rhomboid dodecahedron */
+    .dodecahedron {
+      width: 100px;
+      height: 100px;
+      perspective: 1000px;
+    }
+    .dodecahedron .face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: green;
+      border: 1px solid black;
+      transform-style: preserve-3d;
+    }
+    .dodecahedron .face.front {
+      transform: rotateY(0deg) translateZ(50px);
+    }
+    .dodecahedron .face.right {
+      transform: rotateY(72deg) translateZ(50px);
+    }
+    .dodecahedron .face.back {
+      transform: rotateY(144deg) translateZ(50px);
+    }
+    .dodecahedron .face.left {
+      transform: rotateY(216deg) translateZ(50px);
+    }
+    .dodecahedron .face.top {
+      transform: rotateX(36deg) translateZ(50px);
+    }
+    .dodecahedron .face.bottom {
+      transform: rotateX(-36deg) translateZ(50px);
+    }
   </style>
 </head>
 <body>
-  <form id="form">
-  <label for="size">Size:</label>
-  <input type="number" id="size" value="1">
-  <br>
-  <label for="color">Color:</label>
-  <input type="color" id="color" value="#ff0000">
-  <br>
-  <button type="button" id="generate">Generate</button>
-</form>
-
-<canvas id="canvas" width="400" height="400"></canvas>
-
-<script src="https://cdn.jsdelivr.net/npm/three@0.121.1/build/three.min.js"></script>
-
+  <div class="dodecahedron">
+    <div class="face front"></div>
+    <div class="face right"></div>
+    <div class="face back"></div>
+    <div class="face left"></div>
+    <div class="face top"></div>
+    <div class="face bottom"></div>
+  </div>
+  <!-- Add JavaScript for the spinning animation -->
   <script>
-
-const { sqrt } = Math;
-
-    const canvas = document.getElementById("canvas");
-const renderer = new THREE.WebGLRenderer({ canvas });
-renderer.setSize(canvas.width, canvas.height);
-
-function createRhomboidDodecahedron(size, color) {
-  // create a new geometry for the rhomboid dodecahedron
-  const geometry = new THREE.Geometry();
-
-  // define the vertices of the rhomboid const vertices = [
-  sqrt(2), 0, 1, 
-  sqrt(2), 0, -1, 
-  -sqrt(2), 0, -1, 
-  -sqrt(2), 0, 1,
-  1, sqrt(2), 0, 
-  1, -sqrt(2), 0, 
-  -1, -sqrt(2), 0, 
-  -1, sqrt(2), 0,
-  0, 1, sqrt(2), 
-  0, 1, -sqrt(2), 
-  0, -1, -sqrt(2), 
-  0, -1, sqrt(2)
-];
-
-
-  // define the faces of the rhomboid dodecahedron
-
-const faces = [
-  0, 1, 4, 
-  1, 2, 5, 
-  2, 3, 6, 
-  3, 0, 7,
-  4, 5, 8, 
-  5, 6, 9, 
-  6, 7, 10, 
-  7, 4, 11,
-  8, 9, 0, 
-  9, 10, 1, 
-  10, 11, 2, 
-  11, 8, 3
-];
-
-  // add the vertices and faces to the geometry
-  for (const vertex of vertices) {
-    geometry.vertices.push(new THREE.Vector3(...vertex));
-  }
-  for (const face of faces) {
-    geometry.faces.push(new THREE.Face3(...face));
-  }
-
-  // calculate the normals for the faces
-  geometry.computeFaceNormals();
-
-  // create a new material for the rhomboid dodecahedron
-  const material = new THREE.MeshBasicMaterial({ color });
-
-  // create a mesh from the geometry and material
-  const mesh = new THREE.Mesh(geometry, material);
-
-  // scale the mesh to the specified size
-  mesh.scale.set(size, size, size);
-
-  return mesh;
-}
-
-const generateButton = document.getElementById("generate");
-generateButton.addEventListener("click", () => {
-  // get the size and color from the form elements
-  const size = document.getElementById("size").value;
-  const color = document.getElementById("color").value;
-
-  // create a new rhomboid dodecahedron
-  const mesh = createRhomboidDodecahedron(size, color);
-
-  // create a new scene and add the mesh to it
-  const scene = new THREE.Scene();
-  scene.add(mesh);
-
-  // render the scene
-  renderer.render(scene, new THREE.PerspectiveCamera(75, canvas.width / canvas.height, 0.1, 1000));
-});
-
+    const dodecahedron = document.querySelector('.dodecahedron');
+    let rotation = 0;
+    
+    function spin() {
+      rotation += 1;
+      dodecahedron.style.transform = `rotateY(${rotation}deg)`;
+      requestAnimationFrame(spin);
+    }
+    
+    spin();
   </script>
 </body>
 </html>
