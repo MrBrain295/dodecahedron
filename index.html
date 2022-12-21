@@ -33,12 +33,21 @@ function createRhomboidDodecahedron(size, color) {
   // create a new geometry for the rhomboid dodecahedron
   const geometry = new THREE.Geometry();
 
-  // define the vertices of the rhomboid dodecahedron
-  const vertices = [
-  sqrt(2), 0, 1, sqrt(2), 0, -1, -sqrt(2), 0, -1, -sqrt(2), 0, 1,
-  1, sqrt(2), 0, 1, -sqrt(2), 0, -1, -sqrt(2), 0, -1, sqrt(2), 0,
-  0, 1, sqrt(2), 0, 1, -sqrt(2), 0, -1, -sqrt(2), 0, -1, sqrt(2)
+  // define the vertices of the rhomboid const vertices = [
+  sqrt(2), 0, 1, 
+  sqrt(2), 0, -1, 
+  -sqrt(2), 0, -1, 
+  -sqrt(2), 0, 1,
+  1, sqrt(2), 0, 
+  1, -sqrt(2), 0, 
+  -1, -sqrt(2), 0, 
+  -1, sqrt(2), 0,
+  0, 1, sqrt(2), 
+  0, 1, -sqrt(2), 
+  0, -1, -sqrt(2), 
+  0, -1, sqrt(2)
 ];
+
 
   // define the faces of the rhomboid dodecahedron
   const faces = [
