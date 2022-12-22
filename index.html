@@ -1,57 +1,28 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Random Symmetrical Shapes</title>
+    <title>Number Counter</title>
   </head>
   <body>
-    <canvas id="canvas"></canvas>
+    <p id="counter"></p>
     <script>
-      // Get canvas element
-      var canvas = document.getElementById("canvas");
-      // Get canvas context
-      var ctx = canvas.getContext("2d");
-      // Set canvas width and height
-      canvas.width = 500;
-      canvas.height = 500;
+      // Get counter element
+      var counter = document.getElementById("counter");
+      // Set starting number
+      var num = 1;
 Copy code
-  // Define function to draw random symmetrical shape
-  function drawRandomShape() {
-    // Choose random shape (circle or square)
-    var shape = Math.round(Math.random()) ? "circle" : "square";
-    // Choose random size for shape
-    var size = Math.floor(Math.random() * 50) + 50;
-    // Choose random x and y positions for shape
-    var x = Math.floor(Math.random() * canvas.width);
-    var y = Math.floor(Math.random() * canvas.height);
-    // Set fill style to random color
-    ctx.fillStyle = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
-    // Draw shape
-    if (shape === "circle") {
-      ctx.beginPath();
-      ctx.arc(x, y, size/2, 0, 2*Math.PI);
-      ctx.fill();
-    } else {
-      ctx.fillRect(x - size/2, y - size/2, size, size);
-    }
+  // Define function for counter loop
+  function count() {
+    // Update counter element with current number
+    counter.innerHTML = num;
+    // Increase number for next loop
+    num++;
+    // Set timeout for next loop
+    setTimeout(count, 250);
   }
   
-  // Define function to clear canvas
-  function clearCanvas() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-  }
-  
-  // Define function for animation loop
-  function animate() {
-    // Clear canvas
-    clearCanvas();
-    // Draw random shape
-    drawRandomShape();
-    // Set timeout to draw new shape after random interval
-    setTimeout(animate, Math.floor(Math.random() * 1000) + 500);
-  }
-  
-  // Start animation loop
-  animate();
+  // Start counter loop
+  count();
 </script>
   </body>
 </html>
